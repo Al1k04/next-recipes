@@ -4,7 +4,7 @@ export interface IIngredient {
   category: string;
   description: string | null;
   unit: string;
-  pricePerUnit: string | null;
+  pricePerUnit: number | null;
   createdAt?: Date;
   updatedAt?: Date;
 }
