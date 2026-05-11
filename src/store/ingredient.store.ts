@@ -15,6 +15,14 @@ interface IngredientStore {
   removeIngredient: (id: string) => Promise<void>;
 }
 
+type IngredientPayload = {
+  name: string;
+  category: string;
+  unit: string;
+  pricePerUnit: number | null;
+  description: string;
+};
+
 export const useIngredientStore = create<IngredientStore>((set) => ({
   ingredients: [],
   isPending: false,
@@ -40,7 +48,17 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
     set({ isPending: true, error: null });
 
     try {
-      const result = await createIngredient(formData);
+      const payload: IngredientPayload = {
+        name: formData.get("name") as string,
+        category: formData.get("category") as string,
+        unit: formData.get("unit") as string,
+        pricePerUnit: formData.get("pricePerUnit")
+          ? parseFloat(formData.get("pricePerUnit") as string)
+          : null,
+        description: formData.get("description") as string,
+      };
+
+      const result = await createIngredient(payload);
 
       if (result.success) {
         set((state) => ({
