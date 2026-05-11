@@ -22,7 +22,6 @@ const IngredientForm = () => {
 
   const { addIngredient } = useIngredientStore();
   const [isPending, setIsPending] = useState(false);
-
   const [errors, setErrors] = useState<FormErrors>({});
 
   const handleChange = (field: keyof IngredientFormData) => (value: string) => {
@@ -39,19 +38,20 @@ const IngredientForm = () => {
       return;
     }
 
-    const payload = {
-      ...formData,
-      pricePerUnit:
-        formData.pricePerUnit === "" ? null : Number(formData.pricePerUnit),
-    };
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("category", formData.category);
+    data.append("unit", formData.unit);
+    data.append("pricePerUnit", formData.pricePerUnit);
+    data.append("description", formData.description);
 
     setIsPending(true);
     try {
-      await addIngredient(formData);
+      await addIngredient(data);
       const storeError = useIngredientStore.getState().error;
-      if (storeError) {
+      if (!storeError) {
         handleReset();
-        toast.success("Ingredient added succeffully!");
+        toast.success("Ingredient added successfully!");
       } else {
         console.log("Error:", storeError);
       }
