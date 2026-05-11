@@ -9,7 +9,7 @@ import { create } from "zustand";
 
 interface IActionResult {
   success: boolean;
-  recipe?: string;
+  recipe?: IRecipe;
   error?: string;
 }
 
