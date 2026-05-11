@@ -47,9 +47,9 @@ export const useRecipeStore = create<IRecipeState>((set) => ({
 
     try {
       const result = await createRecipe(formData);
-      if (result.success) {
+      if (result.success && result.recipe) {
         set((state) => ({
-          recipes: [...state.recipes, result.recipe],
+          recipes: [...state.recipes, result.recipe!],
           isLoading: false,
         }));
         return { success: true, recipe: result.recipe };
